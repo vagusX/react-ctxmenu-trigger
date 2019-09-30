@@ -50,6 +50,7 @@
     "rc-test": "6.x",
     "rc-tools": "7.x",
     "react": "^16.0.0",
+    "react-click-outside": "tj/react-click-outside",
     "react-dom": "^16.0.0"
   },
   "pre-commit": [

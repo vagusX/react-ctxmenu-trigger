@@ -2,7 +2,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Trigger from 'rc-trigger';
+import ClickOutside from 'react-click-outside';
+
+import Trigger from '../src/point';
 import 'rc-trigger/assets/index.less';
 import './point.less';
 
@@ -12,54 +14,63 @@ const builtinPlacements = {
   },
 };
 
-const innerTrigger = (
-  <div
-    style={{ padding: 20, background: 'rgba(0, 255, 0, 0.3)' }}
-  >
-    This is popup
-  </div>
-);
+function InnerTrigger({ onClose }) {
+  return (
+    <ClickOutside onClickOutside={onClose}>
+      <div
+        style={{ padding: 20, background: 'rgba(0, 255, 0, 0.3)' }}
+      >
+        This is popup
+      </div>
+    </ClickOutside>
+  );
+}
 
 class Test extends React.Component {
   state = {
-    action: 'click',
-    mouseEnterDelay: 0,
+    action: 'contextMenu',
+    showPopup: false,
+    piont: {},
   }
 
-  onActionChange = ({ target: { value } }) => {
-    this.setState({ action: value });
+  handleCtxMenu = (e) => {
+    e.preventDefault();
+    this.setState({
+      showPopup: true,
+      point: {
+        pageX: e.pageX,
+        pageY: e.pageY,
+      },
+    });
   }
 
-  onDelayChange = ({ target: { value } }) => {
-    this.setState({ mouseEnterDelay: Number(value) || 0 });
+  handleClose = () => {
+    this.setState({
+      showPopup: false,
+    });
   }
 
   render() {
-    const { action, mouseEnterDelay } = this.state;
+    const { action } = this.state;
 
     return (
       <div>
-        <label>
-          Trigger type:
-          {' '}
-          <select value={action} onChange={this.onActionChange}>
-            <option>click</option>
-            <option>hover</option>
-            <option>contextMenu</option>
-          </select>
-        </label>
+        <div
+          style={{
+            border: '1px solid red',
+            padding: '100px 0',
+            textAlign: 'center',
+          }}
+          onContextMenu={this.handleCtxMenu}
+        >
+          Interactive region
+        </div>
 
-        {' '}
-
-        {action === 'hover' && <label>
-          Mouse enter delay:
-          {' '}
-          <input type="text" value={mouseEnterDelay} onChange={this.onDelayChange} />
-        </label>}
 
         <div style={{ margin: 50 }}>
           <Trigger
             popupPlacement="topLeft"
+            popupVisible={this.state.showPopup}
             action={[action]}
             popupAlign={{
               overflow: {
@@ -67,22 +78,16 @@ class Test extends React.Component {
                 adjustY: 1,
               },
             }}
-            mouseEnterDelay={mouseEnterDelay}
+            point={this.state.point}
             popupClassName="point-popup"
             builtinPlacements={builtinPlacements}
-            popup={innerTrigger}
+            popup={(
+              <InnerTrigger
+                onClose={this.handleClose}
+              />
+            )}
             alignPoint
-          >
-            <div
-              style={{
-                border: '1px solid red',
-                padding: '100px 0',
-                textAlign: 'center',
-              }}
-            >
-              Interactive region
-            </div>
-          </Trigger>
+          />
         </div>
       </div>
     );

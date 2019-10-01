@@ -1,21 +1,22 @@
 {
-  "name": "react-ctxmenu",
-  "version": "1.0.0",
+  "name": "react-ctxmenu-trigger",
+  "version": "0.0.1",
   "description": "base abstract ctx menu trigger component for react",
   "keywords": [
     "react",
     "react-component",
     "react-trigger",
-    "trigger"
+    "trigger",
+    "react-ctxmenu-trigger"
   ],
-  "homepage": "https://github.com/vagusX/trigger",
+  "homepage": "https://github.com/vagusX/react-ctxmenu-trigger",
   "author": "vagusX",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vagusX/trigger.git"
+    "url": "https://github.com/vagusX/react-ctxmenu-trigger.git"
   },
   "bugs": {
-    "url": "https://github.com/vagusX/trigger/issues"
+    "url": "https://github.com/vagusX/react-ctxmenu-trigger/issues"
   },
   "files": [
     "es",

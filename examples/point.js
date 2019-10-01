@@ -3,16 +3,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
+import placements from './placements';
 
 import Trigger from '../src/point';
 import 'rc-trigger/assets/index.less';
 import './point.less';
-
-const builtinPlacements = {
-  topLeft: {
-    points: ['tl', 'tl'],
-  },
-};
 
 function InnerTrigger({ onClose }) {
   return (
@@ -30,7 +25,7 @@ class Test extends React.Component {
   state = {
     action: 'contextMenu',
     showPopup: false,
-    piont: {},
+    point: {},
   }
 
   handleCtxMenu = (e) => {
@@ -69,7 +64,7 @@ class Test extends React.Component {
 
         <div style={{ margin: 50 }}>
           <Trigger
-            popupPlacement="topLeft"
+            popupPlacement="bottomLeft"
             popupVisible={this.state.showPopup}
             action={[action]}
             popupAlign={{
@@ -80,7 +75,7 @@ class Test extends React.Component {
             }}
             point={this.state.point}
             popupClassName="point-popup"
-            builtinPlacements={builtinPlacements}
+            builtinPlacements={placements}
             popup={(
               <InnerTrigger
                 onClose={this.handleClose}

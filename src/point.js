@@ -25,30 +25,21 @@ const contextTypes = {
 class Trigger extends React.Component {
   // todo: slim props
   static propTypes = {
-    action: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
     getPopupClassNameFromAlign: PropTypes.any,
-    onPopupVisibleChange: PropTypes.func,
-    afterPopupVisibleChange: PropTypes.func,
     popup: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
     popupStyle: PropTypes.object,
     prefixCls: PropTypes.string,
     popupClassName: PropTypes.string,
-    className: PropTypes.string,
     popupPlacement: PropTypes.string,
     builtinPlacements: PropTypes.object,
     popupTransitionName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     popupAnimation: PropTypes.any,
-    mouseEnterDelay: PropTypes.number,
-    mouseLeaveDelay: PropTypes.number,
     zIndex: PropTypes.number,
-    focusDelay: PropTypes.number,
-    blurDelay: PropTypes.number,
     getPopupContainer: PropTypes.func,
     getDocument: PropTypes.func,
     forceRender: PropTypes.bool,
     destroyPopupOnHide: PropTypes.bool,
     mask: PropTypes.bool,
-    maskClosable: PropTypes.bool,
     onPopupAlign: PropTypes.func,
     popupAlign: PropTypes.object,
     popupVisible: PropTypes.bool,
@@ -68,21 +59,13 @@ class Trigger extends React.Component {
     prefixCls: 'rc-trigger-popup',
     getPopupClassNameFromAlign: returnEmptyString,
     getDocument: returnDocument,
-    onPopupVisibleChange: noop,
-    afterPopupVisibleChange: noop,
     onPopupAlign: noop,
     popupClassName: '',
-    mouseEnterDelay: 0,
-    mouseLeaveDelay: 0.1,
-    focusDelay: 0,
-    blurDelay: 0.15,
     popupStyle: {},
     destroyPopupOnHide: false,
     popupAlign: {},
     defaultPopupVisible: false,
     mask: false,
-    maskClosable: true,
-    action: [],
   };
 
   constructor(props) {
@@ -174,7 +157,6 @@ class Trigger extends React.Component {
       prefixCls,
       destroyPopupOnHide,
       popupClassName,
-      action,
       onPopupAlign,
       popupAnimation,
       popupTransitionName,
@@ -202,7 +184,7 @@ class Trigger extends React.Component {
         visible={popupVisible}
         point={alignPoint && point}
         className={popupClassName}
-        action={action}
+        action={['contextMenu']}
         align={align}
         onAlign={onPopupAlign}
         animation={popupAnimation}
@@ -239,12 +221,6 @@ class Trigger extends React.Component {
     return popupContainer;
   };
 
-  handlePortalUpdate = () => {
-    if (this.state.prevPopupVisible !== this.state.popupVisible) {
-      this.props.afterPopupVisibleChange(this.state.popupVisible);
-    }
-  };
-
   savePopup = node => {
     this._component = node;
   };
@@ -258,7 +234,6 @@ class Trigger extends React.Component {
       return (
         <Portal
           getContainer={this.getContainer}
-          didUpdate={this.handlePortalUpdate}
         >
           {this.getComponent()}
         </Portal>

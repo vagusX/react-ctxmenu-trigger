@@ -16,17 +16,6 @@ function returnDocument() {
   return window.document;
 }
 
-const ALL_HANDLERS = [
-  'onClick',
-  'onMouseDown',
-  'onTouchStart',
-  'onMouseEnter',
-  'onMouseLeave',
-  'onFocus',
-  'onBlur',
-  'onContextMenu',
-];
-
 const contextTypes = {
   rcTrigger: PropTypes.shape({
     onPopupMouseDown: PropTypes.func,
@@ -34,11 +23,9 @@ const contextTypes = {
 };
 
 class Trigger extends React.Component {
+  // todo: slim props
   static propTypes = {
-    children: PropTypes.any,
     action: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
-    showAction: PropTypes.any,
-    hideAction: PropTypes.any,
     getPopupClassNameFromAlign: PropTypes.any,
     onPopupVisibleChange: PropTypes.func,
     afterPopupVisibleChange: PropTypes.func,
@@ -96,8 +83,6 @@ class Trigger extends React.Component {
     mask: false,
     maskClosable: true,
     action: [],
-    showAction: [],
-    hideAction: [],
   };
 
   constructor(props) {
@@ -114,12 +99,6 @@ class Trigger extends React.Component {
       prevPopupVisible: popupVisible,
       popupVisible,
     };
-
-    ALL_HANDLERS.forEach(h => {
-      this[`fire${h}`] = e => {
-        this.fireEvents(h, e);
-      };
-    });
   }
 
   getChildContext() {
@@ -131,7 +110,6 @@ class Trigger extends React.Component {
   }
 
   componentWillUnmount() {
-    this.clearDelayTimer();
     clearTimeout(this.mouseDownTimeout);
   }
 
@@ -261,97 +239,11 @@ class Trigger extends React.Component {
     return popupContainer;
   };
 
-  /**
-   * @param popupVisible    Show or not the popup element
-   * @param event           SyntheticEvent, used for `pointAlign`
-   */
-  setPopupVisible(popupVisible, event) {
-    const { alignPoint } = this.props;
-    const { popupVisible: prevPopupVisible } = this.state;
-
-    this.clearDelayTimer();
-
-    if (prevPopupVisible !== popupVisible) {
-      if (!('popupVisible' in this.props)) {
-        this.setState({ popupVisible, prevPopupVisible });
-      }
-      this.props.onPopupVisibleChange(popupVisible);
-    }
-
-    // Always record the point position since mouseEnterDelay will delay the show
-    if (alignPoint && event) {
-      this.setPoint(event);
-    }
-  }
-
-  setPoint = point => {
-    const { alignPoint } = this.props;
-    if (!alignPoint || !point) return;
-
-    this.setState({
-      point: {
-        pageX: point.pageX,
-        pageY: point.pageY,
-      },
-    });
-  };
-
   handlePortalUpdate = () => {
     if (this.state.prevPopupVisible !== this.state.popupVisible) {
       this.props.afterPopupVisibleChange(this.state.popupVisible);
     }
   };
-
-  delaySetPopupVisible(visible, delayS, event) {
-    const delay = delayS * 1000;
-    this.clearDelayTimer();
-    if (delay) {
-      const point = event ? { pageX: event.pageX, pageY: event.pageY } : null;
-      this.delayTimer = setTimeout(() => {
-        this.setPopupVisible(visible, point);
-        this.clearDelayTimer();
-      }, delay);
-    } else {
-      this.setPopupVisible(visible, event);
-    }
-  }
-
-  clearDelayTimer() {
-    if (this.delayTimer) {
-      clearTimeout(this.delayTimer);
-      this.delayTimer = null;
-    }
-  }
-
-  createTwoChains(event) {
-    const childPros = this.props.children.props;
-    const props = this.props;
-    if (childPros[event] && props[event]) {
-      return this[`fire${event}`];
-    }
-    return childPros[event] || props[event];
-  }
-
-  forcePopupAlign() {
-    if (this.state.popupVisible && this._component && this._component.alignInstance) {
-      this._component.alignInstance.forceAlign();
-    }
-  }
-
-  fireEvents(type, e) {
-    const childCallback = this.props.children.props[type];
-    if (childCallback) {
-      childCallback(e);
-    }
-    const callback = this.props[type];
-    if (callback) {
-      callback(e);
-    }
-  }
-
-  close() {
-    this.setPopupVisible(false);
-  }
 
   savePopup = node => {
     this._component = node;

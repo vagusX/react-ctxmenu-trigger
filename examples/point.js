@@ -5,8 +5,8 @@ import ReactDOM from 'react-dom';
 import ClickOutside from 'react-click-outside';
 import placements from './placements';
 
-import Trigger from '../src/point';
-import 'rc-trigger/assets/index.less';
+import CtxMenuTrigger from '../src';
+import 'react-ctxmenu/assets/index.less';
 import './point.less';
 
 function InnerTrigger({ onClose }) {
@@ -63,7 +63,7 @@ class Test extends React.Component {
 
 
         <div style={{ margin: 50 }}>
-          <Trigger
+          <CtxMenuTrigger
             popupPlacement="bottomLeft"
             popupVisible={this.state.showPopup}
             action={[action]}

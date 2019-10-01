@@ -1,28 +1,28 @@
 {
-  "name": "rc-trigger",
-  "version": "2.6.5",
-  "description": "base abstract trigger component for react",
+  "name": "react-ctxmenu",
+  "version": "1.0.0",
+  "description": "base abstract ctx menu trigger component for react",
   "keywords": [
     "react",
     "react-component",
     "react-trigger",
     "trigger"
   ],
-  "homepage": "https://github.com/react-component/trigger",
-  "author": "",
+  "homepage": "https://github.com/vagusX/trigger",
+  "author": "vagusX",
   "repository": {
     "type": "git",
-    "url": "https://github.com/react-component/trigger.git"
+    "url": "https://github.com/vagusX/trigger.git"
   },
   "bugs": {
-    "url": "https://github.com/react-component/trigger/issues"
+    "url": "https://github.com/vagusX/trigger/issues"
   },
   "files": [
     "es",
     "lib",
     "assets/*.css"
   ],
-  "licenses": "MIT",
+  "license": "MIT",
   "main": "./lib/index",
   "module": "./es/index",
   "config": {
@@ -58,11 +58,9 @@
   ],
   "dependencies": {
     "babel-runtime": "6.x",
-    "classnames": "^2.2.6",
     "prop-types": "15.x",
     "rc-align": "^2.4.0",
     "rc-animate": "2.x",
-    "rc-util": "^4.4.0",
-    "react-lifecycles-compat": "^3.0.4"
+    "rc-util": "^4.4.0"
   }
 }
